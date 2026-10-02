@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = "build/iot_smart_parking.bin"
+elf = "build/iot_smart_parking.elf"
