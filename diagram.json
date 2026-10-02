@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "author": "Shivaraj Warad",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-breadboard", "id": "bb1", "top": 121.8, "left": 89.2, "attrs": {} },
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 123.14,
+      "left": 445.3,
+      "rotate": 90,
+      "attrs": { "builder": "esp-idf" }
+    },
+    { "type": "wokwi-hc-sr04", "id": "ultrasonic1", "top": -94.5, "left": -100.1, "attrs": {} },
+    { "type": "wokwi-hc-sr04", "id": "ultrasonic2", "top": -113.7, "left": 312.7, "attrs": {} },
+    { "type": "wokwi-hc-sr04", "id": "ultrasonic3", "top": -94.5, "left": 543.1, "attrs": {} },
+    { "type": "wokwi-hc-sr04", "id": "ultrasonic4", "top": -94.5, "left": 82.3, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:5V", "bb1:tp.40", "red", [ "v0" ] ],
+    [ "esp:GND.1", "bb1:tn.26", "black", [ "v0" ] ],
+    [ "ultrasonic4:VCC", "bb1:tp.3", "red", [ "v0" ] ],
+    [ "ultrasonic2:VCC", "bb1:tp.23", "red", [ "v0" ] ],
+    [ "ultrasonic3:VCC", "bb1:tp.43", "red", [ "v0" ] ],
+    [ "ultrasonic1:VCC", "bb1:tp.1", "red", [ "v0" ] ],
+    [ "ultrasonic1:GND", "bb1:tn.1", "black", [ "v0" ] ],
+    [ "ultrasonic4:GND", "bb1:tn.5", "black", [ "v0" ] ],
+    [ "ultrasonic2:GND", "bb1:tn.25", "black", [ "v0" ] ],
+    [ "ultrasonic3:GND", "bb1:tn.47", "black", [ "v0" ] ],
+    [ "ultrasonic1:TRIG", "esp:5", "green", [ "v288", "h508.4" ] ],
+    [ "ultrasonic1:ECHO", "esp:18", "green", [ "v297.6", "h508" ] ],
+    [ "ultrasonic4:TRIG", "esp:19", "green", [ "v355.2", "h345.2" ] ],
+    [ "ultrasonic4:ECHO", "esp:21", "green", [ "v374.4", "h335.2" ] ],
+    [ "ultrasonic2:TRIG", "esp:22", "green", [ "v76.8", "h143.6" ] ],
+    [ "ultrasonic2:ECHO", "esp:23", "green", [ "v48", "h162.4" ] ],
+    [ "ultrasonic3:TRIG", "esp:25", "green", [ "v76.8", "h-125.2" ] ],
+    [ "ultrasonic3:ECHO", "esp:26", "green", [ "v28.8", "h-0.8" ] ]
+  ],
+  "dependencies": {},
+  "serialMonitor": {
+    "display": "always"
+  }
+}
