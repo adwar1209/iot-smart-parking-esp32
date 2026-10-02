@@ -16,18 +16,8 @@ ESP32-based IoT smart parking system using ESP-IDF, FreeRTOS, ultrasonic sensors
 
 ## Architecture
 
-HC-SR04 Sensors  
-→ ESP32 + ESP-IDF  
-→ Parking Occupancy Logic  
-→ Wi-Fi  
-→ MQTT Broker  
-→ MQTTX Subscriber
+HC-SR04 Sensors  → ESP32 + ESP-IDF  → Parking Occupancy Logic  → Wi-Fi  → MQTT Broker  → MQTTX Subscriber
 
-## MQTT Topic
-
-```text
-shivaraj/smartparking/status
-```
 
 ## Example Payload
 
