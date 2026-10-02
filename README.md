@@ -18,18 +18,13 @@ An IoT-based smart parking system developed using ESP32 and ESP-IDF.
 ## System Architecture
 
 HC-SR04 Sensors
-        |
-        v
+        ->
 ESP32 + ESP-IDF
-        |
-        v
+        ->
 Parking Occupancy Logic
-        |
-        v
+        ->
 Wi-Fi
-        |
-        v
+        ->
 MQTT Broker
-        |
-        v
+        ->
 MQTTX Subscriber
