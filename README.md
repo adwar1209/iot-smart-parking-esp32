@@ -1,25 +1,62 @@
-# IoT Smart Parking System using ESP32 and ESP-IDF
+# IoT Smart Parking System using ESP32
 
-ESP32-based IoT smart parking system using ESP-IDF, FreeRTOS, ultrasonic sensors, Wi-Fi, and MQTT for real-time parking occupancy monitoring and cloud data transmission.
+This project is a small IoT-based parking monitor built with an ESP32, ESP-IDF, FreeRTOS, ultrasonic sensors, Wi-Fi, and MQTT.
 
-## Features
+The idea is simple: each parking slot has an ultrasonic sensor. The ESP32 checks the distance reported by each sensor, decides whether the slot is free or occupied, counts how many spaces are available, and sends the latest parking status to the cloud using MQTT.
 
-- Four parking-slot monitoring using HC-SR04 ultrasonic sensors
-- Native ESP-IDF firmware
-- FreeRTOS parking monitoring task
-- Wi-Fi connectivity using Wokwi-GUEST
-- MQTT communication using the EMQX public broker
-- Real-time parking occupancy updates
-- Available-slot calculation
-- Cloud data monitoring using MQTTX
-- Wokwi simulation
+I built and tested the whole setup in Wokwi, so the project can be demonstrated without needing the physical hardware.
 
-## Architecture
+## What the project does
 
-HC-SR04 Sensors  → ESP32 + ESP-IDF  → Parking Occupancy Logic  → Wi-Fi  → MQTT Broker  → MQTTX Subscriber
+- Monitors four parking slots using HC-SR04 ultrasonic sensors
+- Detects whether each slot is free or occupied
+- Counts the number of available parking spaces
+- Runs the monitoring logic as a FreeRTOS task
+- Connects the ESP32 to Wi-Fi
+- Publishes parking data using MQTT
+- Uses the EMQX public broker for testing
+- Lets the parking status be viewed live in MQTTX
+- Runs completely in Wokwi simulation
 
+## How it works
 
-## Example Payload
+The data flow is:
+
+```text
+HC-SR04 Sensors
+      |
+      v
+ESP32
+      |
+      v
+Parking Occupancy Logic
+      |
+      v
+Wi-Fi
+      |
+      v
+MQTT
+      |
+      v
+EMQX Broker
+      |
+      v
+MQTTX Subscriber
+```
+
+Each sensor measures the distance to the nearest object.
+
+If the measured distance is below the configured threshold, the slot is treated as occupied. Otherwise, it is treated as free.
+
+The ESP32 repeats this process for all four slots and then publishes the updated result over MQTT.
+
+## MQTT topic
+
+```text
+shivaraj/smartparking/status
+```
+
+## Example MQTT message
 
 ```json
 {
@@ -32,34 +69,60 @@ HC-SR04 Sensors  → ESP32 + ESP-IDF  → Parking Occupancy Logic  → Wi-Fi  �
 }
 ```
 
-- `1` = occupied
-- `0` = free
+In the payload:
 
-## Pin Mapping
+- `1` means the parking slot is occupied
+- `0` means the parking slot is free
 
-| Slot | TRIG | ECHO |
+## Pin connections
+
+| Parking Slot | TRIG | ECHO |
 |---|---:|---:|
-| 1 | GPIO 5 | GPIO 18 |
-| 2 | GPIO 19 | GPIO 21 |
-| 3 | GPIO 22 | GPIO 23 |
-| 4 | GPIO 25 | GPIO 26 |
+| Slot 1 | GPIO 5 | GPIO 18 |
+| Slot 2 | GPIO 19 | GPIO 21 |
+| Slot 3 | GPIO 22 | GPIO 23 |
+| Slot 4 | GPIO 25 | GPIO 26 |
 
-## Technologies
+## Tools and technologies
 
 - ESP32
 - ESP-IDF
 - FreeRTOS
-- HC-SR04
+- HC-SR04 ultrasonic sensors
 - Wi-Fi
 - MQTT
 - EMQX
 - MQTTX
 - Wokwi
 
-## Run
+## Running the project
 
-1. Build the ESP-IDF project.
+1. Build the project using ESP-IDF.
 2. Start the Wokwi simulation.
-3. Connect MQTTX to the EMQX public broker.
-4. Subscribe to `shivaraj/smartparking/status`.
-5. Change HC-SR04 distances in Wokwi to simulate vehicles entering or leaving slots.
+3. Wait for the ESP32 to connect to `Wokwi-GUEST`.
+4. Open MQTTX and connect to the EMQX public broker.
+5. Subscribe to:
+
+   ```text
+   shivaraj/smartparking/status
+   ```
+
+6. Change the HC-SR04 distances in Wokwi to simulate cars entering or leaving parking spaces.
+7. Watch the MQTT payload update in real time.
+
+## Why I built this
+
+I wanted to build a project that combines embedded firmware with a real IoT communication flow instead of stopping at local sensor readings.
+
+This project helped me work with GPIO, timing, FreeRTOS tasks, Wi-Fi, MQTT, structured sensor data, and cloud communication using ESP-IDF.
+
+## Future improvements
+
+Some possible next steps are:
+
+- Add sensor filtering and hysteresis
+- Publish data only when a slot changes state
+- Add entry and exit tracking
+- Add alerts when the parking area is full
+- Add a dedicated cloud backend or database
+- Test the same firmware on physical ESP32 hardware
